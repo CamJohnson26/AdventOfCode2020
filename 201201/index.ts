@@ -14,9 +14,16 @@ const input = readData();
 const map = new Map();
 
 input.forEach(i => {
+  input.forEach(j => {
+    if (!map.has(i + j)) {
+      map.set(i + j, [i, j])
+    }
+  })
+})
+
+input.forEach(i => {
   if (map.has(2020 - i)) {
-    console.log(i * (2020 - i), i, 2020 - i);
-  } else {
-    map.set(i, true)
+    const vals = map.get(2020 - i).concat(i)
+    console.log(vals.reduce((cur, acc) => cur * acc, 1), vals);
   }
 })
