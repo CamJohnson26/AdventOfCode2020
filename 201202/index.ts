@@ -12,9 +12,7 @@ const validatePassword: (rule, password: string) => boolean = (rule, password) =
   const [range, letter] = rule.split(" ");
   const [min, max] = range.split("-").map(i => parseInt(i))
 
-  const count = password.split("").reduce((acc, cur) => acc + (cur === letter ? 1 : 0), 0)
-  console.log(rule, password, letter, count)
-  return count >= min && count <= max;
+  return (password[min - 1] === letter || password[max - 1] === letter) && password[min - 1] !== password[max - 1]
 }
 
 const input = readData();
