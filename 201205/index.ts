@@ -21,7 +21,15 @@ const action = (x, y, z) => {
 } 
 
 const input = readData();
-const r = input.map(i => i[0] * 8 + i[1])
+const counts = {}
 
 
-console.log(Math.max(...r))
+for (const c of input) {
+  if (!Object.keys(counts).includes(`${c[0]}`)) {
+    counts[`${c[0]}`] = 1
+  } else {
+    counts[`${c[0]}`] += 1
+  }
+}
+
+console.log(counts)
