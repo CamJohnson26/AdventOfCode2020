@@ -21,18 +21,10 @@ const input = readData();
 
 let counts = 0
 for (const group of input) {
-  const map = {}
-  for (const row of group) {
-    const ans = row.split('')
-    for (const answer of ans) {
-      if (Object.keys(map).includes(answer)) {
-        continue
-      } else {
-        map[answer] = true
-      }
-    }
-  }
-  counts += Object.keys(map).length
+  const sets = group.map(g => new Set(g))
+  const count = Array.from(sets.reduce((acc, cur) => new Set(Array.from(cur).filter(c => acc.has(c))))).length
+  console.log(group, count)
+  counts += count
 }
 
 
