@@ -14,24 +14,29 @@ const readData = () => {
   return input;
 }
 
-const input = readData();
+const old_input = readData();
 
-const done: {[key: string]: boolean} = {}
+for (let i = 0; i < old_input.length; i++) {
+  console.log(i)
+  const input = [...old_input];
+  input[i] = [old_input[i][0] === 'jmp' ? 'nop' : old_input[i][0] === 'nop' ? 'jmp' : 'acc', old_input[i][1]];
+  const done: {[key: string]: boolean} = {}
 
-let acc = 0;
-let index = 0
-console.log(input)
-while (!Object.keys(done).includes(index.toString())) {
-  console.log(input[index])
-  done[index.toString()] = true
-  if (input[index][0] === 'nop') {
-    index += 1;
-  } else if (input[index][0] === 'acc') {
-    acc += input[index][1] as number;
-    index += 1;
-  } else if (input[index][0] === 'jmp') {
-    index += input[index][1] as number;
+  let acc = 0;
+  let index = 0
+  while (!Object.keys(done).includes(index.toString())) {
+    done[index.toString()] = true
+    if (input[index][0] === 'nop') {
+      index += 1;
+    } else if (input[index][0] === 'acc') {
+      acc += input[index][1] as number;
+      index += 1;
+    } else if (input[index][0] === 'jmp') {
+      index += input[index][1] as number;
+    }
+  
+    if (index === input.length) {
+      console.log('FOUND IT!!!!!!!!!!!!!!!!!!', acc)
+    }
   }
 }
-
-console.log(acc)
