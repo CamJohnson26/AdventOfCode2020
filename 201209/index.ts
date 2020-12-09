@@ -13,25 +13,38 @@ const readData = () => {
 
 const input = readData();
 const result = input;
-const preamble = 31161678
+const preamble = 25
 
-const reduce = (input, depth) => {
-  console.log(depth)
-  for (let i = 0; i <= input.length - depth; i++) {
-    const val = input.slice(i, i+ depth).reduce((acc, cur) => acc + cur, 0)
-    if (val === preamble) {
-      const m = Math.min(...input.slice(i, i+ depth)) + Math.max(...input.slice(i, i+ depth))
-      console.log(`Answer: ${m}`)
-      return false;
+const memo = {};
+const isSum = (num, prev: number[]) => {
+  if (Object.keys(memo).includes(`${num}:${prev.join(',')}`)) {
+    return memo[`${num}:${prev.join(',')}`];
+  };
+  if (num < 0) {
+    return false
+  }
+  if (num === 0) {
+    return true
+  }
+  let i = 0
+  for (const p of prev) {
+    i += 1
+    if (isSum(num-p, [...prev.slice(0, i), ...prev.slice(i, prev.length)])) {
+      memo[`${num}:${prev.join(',')}`] = true
+      return true;
+    } else {
+      memo[`${num}:${prev.join(',')}`] = false
     }
   }
-  return true
+  return false;
 }
-let d = 2
-let answer = true;
-while(answer){
-  answer = reduce(input, d)
-  d+=1;
+
+for (let i = preamble; i < input.length; i++) {
+  // console.log(input[i], input.slice(i-preamble, i));
+  if (!isSum(input[i], input.slice(i-preamble, i))) {
+    console.log(`Answer: ${input[i]}`)
+    break;
+  }
 }
 
 console.log(result)
