@@ -65,25 +65,43 @@ let current = 0;
 
 
 const inputS = input.sort((a,b) => a < b ? -1 : a > b? 1 : 0)
-inputS.push(builtIn)
-memo[0] = 1
+// inputS.push(builtIn)
+// memo[0] = 1
 
-for (const element of inputS) {
-  const chains = inputS.filter(i => element - i <= 3 && element - i > 0)
-  if (element - 0 <= 3) {
-    chains.push(0)
+// for (const element of inputS) {
+//   const chains = inputS.filter(i => element - i <= 3 && element - i > 0)
+//   if (element - 0 <= 3) {
+//     chains.push(0)
+//   }
+//   // console.log(chains)
+//   for (const c of chains) {
+//     console.log(element, memo[element], memo)
+//     memo[element] = chains.reduce((acc, cur) => {
+//       return memo[cur] + acc
+//     }, 0)
+//   }
+//   // console.log(memo)
+//   // break
+// }
+// // console.log(memo)
+
+const recurse = (cur, list, log) => {
+  if (memo.hasOwnProperty(cur)) {
+    return memo[cur];
   }
-  console.log(chains)
-  for (const c of chains) {
-    console.log(element, memo[element], memo)
-    memo[element] = chains.reduce((acc, cur) => {
-      return memo[cur] + acc
-    }, 0)
+  if (list.length === 0) {
+    if (builtIn - cur <= 3 && builtIn - cur > 0) {
+      console.log(cur, list, log)
+    }
+    memo[cur] = builtIn - cur <= 3 && builtIn - cur > 0 ? 1 : 0
+    return memo[cur]
   }
-  console.log(memo)
-  // break
+  const result = list.map((l, i) => l - cur <= 3 && l - cur > 0 ? recurse(l, list.slice(i + 1, list.length), [...log, l]) : 0)
+    .reduce((acc,cur) => acc + cur, 0)
+
+  memo[cur] = result
+  return memo[cur]
 }
-console.log(memo)
-// console.log(inputS)
+console.log(recurse(0, inputS, [0]))
 
 // console.log(count(start, inputS, 0));
