@@ -40,49 +40,21 @@ const start = 0;
 let oneJolt = 0;
 let threeJolt = 0;
 
-function count(cur, list, depth) {
-  // console.log(depth)
-  let result = 0
+function count(cur, list, jolts) {
+  console.log(list)
   if (list.length === 0) {
-    // jolts.push(3)
-    // console.log(jolts)
-    // console.log('Done!', jolts.filter(j => j === 1).length * jolts.filter(j => j === 3).length)
-    return 1;
+    jolts.push(3)
+    console.log(jolts)
+    console.log('Done!', jolts.filter(j => j === 1).length * jolts.filter(j => j === 3).length)
+    return 0;
   }
-  for (let i = 0; i < list.length; i++) {
+  for (let i = 0; i < input.length; i++) {
     const e = list[i]
     const diff = e - cur
     if (diff <= 3) {
-      result += count(e, [...list.slice(i+1, list.length)], depth + 1)
+      return 1 + count(e, [...list.slice(0, i), ...list.slice(i+1, list.length)], jolts.concat([diff]))
     }
   }
-  return result
 }
 
-const memo = {}
-
-let current = 0;
-
-
-const inputS = input.sort((a,b) => a < b ? -1 : a > b? 1 : 0)
-inputS.push(builtIn)
-memo[0] = 1
-
-for (const element of inputS) {
-  const chains = inputS.filter(i => element - i <= 3 && element - i > 0)
-  if (element - 0 <= 3) {
-    chains.push(0)
-  }
-  console.log(chains)
-  for (const c of chains) {
-    console.log(element, memo[element], memo)
-    memo[element] = chains.reduce((acc, cur) => {
-      return memo[cur] + acc
-    }, 0)
-  }
-  console.log(memo)
-}
-console.log(memo)
-// console.log(inputS)
-
-// console.log(count(start, inputS, 0));
+console.log(count(start, input, []));
